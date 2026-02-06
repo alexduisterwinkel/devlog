@@ -1,6 +1,7 @@
-import EntryItem from "./EntryItem";
+import { useCallback } from "react";
 import { Entry } from "../types";
 import { motion, AnimatePresence } from "framer-motion";
+import EntryItem from "./EntryItem";
 
 type Props = {
   entries: Entry[];
@@ -9,6 +10,16 @@ type Props = {
 };
 
 export default function EntryList({ entries, onDelete, onEdit, hasEntries }: Props) {
+	const handleDelete = useCallback(
+	  (id: string) => onDelete(id),
+	  [onDelete]
+	);
+
+	const handleEdit = useCallback(
+	  (id: string, text: string) => onEdit(id, text),
+	  [onEdit]
+	);
+	
 	if (entries.length === 0 && hasEntries) {
 	  return (
 		<div className="text-center py-10 text-gray-500 dark:text-gray-400">
@@ -37,8 +48,8 @@ export default function EntryList({ entries, onDelete, onEdit, hasEntries }: Pro
 						>
 			  			<EntryItem
 							entry={entry}
-							onDelete={onDelete}
-							onEdit={onEdit}
+							onDelete={handleDelete}
+							onEdit={handleEdit}
 			  			/>
 					</motion.div>
 		  		))}

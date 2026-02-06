@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Entry } from "../types";
 
 type Props = {
@@ -7,7 +7,7 @@ type Props = {
   onEdit: (id: string, newText: string) => void;
 };
 
-export default function EntryItem({ entry, onDelete, onEdit }: Props) {
+function EntryItem({ entry, onDelete, onEdit }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(entry.text);
 
@@ -79,3 +79,5 @@ export default function EntryItem({ entry, onDelete, onEdit }: Props) {
 </div>
   );
 }
+
+export default memo(EntryItem);
