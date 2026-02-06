@@ -2,8 +2,8 @@
 
 A modern **developer logging app** built with **React, TypeScript, Tailwind CSS**, and **Next.js**, showcasing clean architecture, responsive design, and polished UX.
 
-![Dev Log Preview]![Preview of the application](./assets/overview_list_light.png)(./assets/overview_timeline_dark.png)
-*Screenshot: dark mode with multiple entries and tag filters active*
+![Overview of the application in light mode](./assets/entry_list_light.png)![Overview of the application in dark mode](./assets/overview_timeline_dark.png)![Search entries](./assets/search_list_dark.png)
+*Screenshot: Overview of the app with a list and timeline view. also in dark mode
 
 ---
 
