@@ -41,7 +41,6 @@ export default function EntryForm({ onSubmit }: Props) {
 		className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
 			Add Entry
 	  </button>
-	textRef.current?.focus();
     </form>
   );
 }
