@@ -8,6 +8,13 @@ export default function Home() {
 	const [text, setText] = useState('');
 	const [tags, setTags] = useState('');
 	const [activeTag, setActiveTag] = useState<string | null>(null);
+	const [editingId, setEditingId] = useState<string | null>(null);
+	const [editText, setEditText] = useState('');
+
+	
+	const deleteEntry = (id: string) => {
+	  setEntries(prev => prev.filter(e => e.id !== id));
+	};
 
 	const handleSubmit = (e: React.FormEvent) => {
     	e.preventDefault();
@@ -81,7 +88,39 @@ export default function Home() {
 				!activeTag || entry.tags.includes(activeTag)
 			  )
 			  .map(entry => (
-				<div key={entry.id}>{entry.text}</div>
+				<div key={entry.id}>
+				  	{editingId === entry.id ? (
+					  <>
+						<textarea
+						  value={editText}
+						  onChange={e => setEditText(e.target.value)}
+						/>
+						<button onClick={() => {
+						  setEntries(prev =>
+							prev.map(e =>
+							  e.id === entry.id ? { ...e, text: editText } : e
+							)
+						  );
+						  setEditingId(null);
+						}}>
+						  Save
+						</button>
+					  </>
+					) : (
+					  <div>{entry.text}</div>
+					)}
+
+					<button onClick={() => {
+					  setEditingId(entry.id);
+					  setEditText(entry.text);
+					}}>
+					  Edit
+					</button>
+
+			  		<button onClick={() => deleteEntry(entry.id)}>
+				  		Delete
+					</button>
+				</div>
 			  ))}
 		</div>
     </main>
