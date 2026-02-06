@@ -9,7 +9,7 @@ type Props = {
 
 export default function EntryList({ entries, onDelete, onEdit }: Props) {
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       {entries.map((entry) => (
         <EntryItem
           key={entry.id}

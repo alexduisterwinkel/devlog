@@ -10,16 +10,31 @@ export default function TagFilter({
   setActiveTag,
 }: Props) {
   return (
-    <div className="mb-4 space-x-2">
-      <button onClick={() => setActiveTag(null)}>
-        All
-      </button>
+    <div className="mb-6 flex flex-wrap gap-2">
+	  <button
+		onClick={() => setActiveTag(null)}
+		className={`px-3 py-1 rounded-full ${
+		  activeTag === null
+			? "bg-blue-500 text-white"
+			: "bg-gray-200 text-gray-700 hover:bg-gray-300"
+		}`}
+	  >
+		All
+	  </button>
 
-      {tags.map(tag => (
-        <button key={tag} onClick={() => setActiveTag(tag)}>
-          #{tag}
-        </button>
-      ))}
-    </div>
+	  {tags.map(tag => (
+		<button
+		  key={tag}
+		  onClick={() => setActiveTag(tag)}
+		  className={`px-3 py-1 rounded-full ${
+			activeTag === tag
+			  ? "bg-blue-500 text-white"
+			  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+		  }`}
+		>
+		  #{tag}
+		</button>
+	  ))}
+	</div>
   );
 }

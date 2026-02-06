@@ -56,8 +56,10 @@ export default function Home() {
 	};
 
 	return (
-    	<main className="p-4">
-      	<h1 className="text-2xl font-bold mb-4">Dev Log</h1>
+    	<main className="p-6 max-w-3xl mx-auto bg-gray-50 min-h-screen">
+	  	<h1 className="text-4xl font-extrabold mb-6 text-center text-gray-800">
+			Dev Log
+	  	</h1>
 
 		<EntryForm onSubmit={addEntry} />
 
