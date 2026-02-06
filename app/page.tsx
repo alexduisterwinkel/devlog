@@ -61,6 +61,7 @@ export default function Home() {
 					entries={visibleEntries}
 					onDelete={deleteEntry}
 					onEdit={editEntry}
+					hasEntries={allTags.length > 0}
 				  />
 			</ErrorBoundary>
 		</main>

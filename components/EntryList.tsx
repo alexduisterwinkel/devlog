@@ -8,7 +8,14 @@ type Props = {
   onEdit: (id: string, newText: string) => void;
 };
 
-export default function EntryList({ entries, onDelete, onEdit }: Props) {
+export default function EntryList({ entries, onDelete, onEdit, hasEntries }: Props) {
+	if (entries.length === 0 && hasEntries) {
+	  return (
+		<div className="text-center py-10 text-gray-500 dark:text-gray-400">
+		  No entries match your search or tag filter.
+		</div>
+	  );
+	}
 	if (entries.length === 0) {
 	return (
 		<div className="text-center py-10 text-gray-500 dark:text-gray-400">
