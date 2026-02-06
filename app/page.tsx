@@ -35,22 +35,20 @@ export default function Home() {
 	  setEntries(prev => prev.filter(e => e.id !== id));
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
-    	e.preventDefault();
-		console.log("submit fired")
-    	const newEntry: Entry = {
-    		id: crypto.randomUUID(),
-    		date: new Date().toISOString().split('T')[0],
-    		text,
-    		tags: tags.split(',').map(t => t.trim()).filter(Boolean),
-    	};
+	const addEntry = (formData: FormData) => {
+    const textValue = formData.get('text') as string;
+    const tagsValue = formData.get('tags') as string;
 
-		console.log(entries);
-		setEntries(prev => [newEntry, ...entries]);
-		setText('');
-		setTags('');
-  	};
+    const newEntry: Entry = {
+	  id: crypto.randomUUID(),
+	  date: new Date().toISOString().split('T')[0],
+	  text: textValue,
+	  tags: tagsValue.split(',').map(t => t.trim()).filter(Boolean),
+	};
 
+	setEntries(prev => [newEntry, ...prev]);
+	};
+	
 	const editEntry = (id: string, newText: string) => {
 	  setEntries(prev =>
 		prev.map(e => (e.id === id ? { ...e, text: newText } : e))
@@ -61,37 +59,14 @@ export default function Home() {
     	<main className="p-4">
       	<h1 className="text-2xl font-bold mb-4">Dev Log</h1>
 
-      	<form onSubmit={handleSubmit} className="mb-4 space-y-2">
-        	<textarea
-          	value={text}
-          	onChange={e => setText(e.target.value)}
-          	className="w-full border p-2 rounded"
-          	rows={3}
-        />
+		<EntryForm onSubmit={addEntry} />
 
-        	<input
-          		value={tags}
-          		onChange={e => setTags(e.target.value)}
-          		className="w-full border p-2 rounded"
-        	/>
-
-        	<button type="submit">
-          		Add Entry
-        	</button>
-      	</form>
-
-		<div className="mb-4 space-x-2">
-		  <button onClick={() => setActiveTag(null)}>
-			All
-		  </button>
-
-		  {allTags.map(tag => (
-			<button key={tag} onClick={() => setActiveTag(tag)}>
-			  #{tag}
-			</button>
-		  ))}
-		</div>
-
+		<TagFilter
+			tags={allTags}
+			activeTag={activeTag}
+			setActiveTag={setActiveTag}
+		  />
+			
 		<EntryList
 			entries={entries.filter(
 			  entry => !activeTag || entry.tags.includes(activeTag)
@@ -99,7 +74,6 @@ export default function Home() {
 			onDelete={deleteEntry}
 			onEdit={editEntry}
 		  />
-   
     </main>
   );
 }
