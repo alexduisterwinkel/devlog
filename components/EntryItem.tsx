@@ -22,7 +22,7 @@ export default function EntryItem({ entry, onDelete, onEdit }: Props) {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition">
+    <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:shadow-md transition">
   {isEditing ? (
     <>
       <textarea

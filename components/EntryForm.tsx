@@ -10,18 +10,18 @@ export default function EntryForm({ onSubmit }: Props) {
         onSubmit(new FormData(e.currentTarget));
         e.currentTarget.reset();
       }}
-      className="mb-6 space-y-3 p-4 bg-white shadow rounded-lg"
+      className="bg-white dark:bg-gray-800 mb-6 space-y-3 p-4 bg-white shadow rounded-lg"
     >
       <textarea
         name="text"
-        className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:text-white"
 		rows={3}
 		placeholder="What did you work on today?"
       />
 
       <input
         name="tags"
-        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:text-white"
 		placeholder="Tags (comma separated)"
       />
 

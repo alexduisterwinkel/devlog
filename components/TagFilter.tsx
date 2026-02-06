@@ -10,7 +10,7 @@ export default function TagFilter({
   setActiveTag,
 }: Props) {
   return (
-    <div className="mb-6 flex flex-wrap gap-2">
+    <div className="bg-white dark:bg-gray-800 mb-6 flex flex-wrap gap-2">
 	  <button
 		onClick={() => setActiveTag(null)}
 		className={`px-3 py-1 rounded-full ${
