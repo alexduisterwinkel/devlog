@@ -6,6 +6,7 @@ import { Entry } from '../types';
 import EntryForm from "../components/EntryForm";
 import EntryList from "../components/EntryList";
 import TagFilter from "../components/TagFilter";
+import SearchBar from "../components/SearchBar";
 import './globals.css';
 
 
@@ -17,6 +18,8 @@ export default function Home() {
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [editText, setEditText] = useState('');
 	const [darkMode, setDarkMode] = useState(false);
+	const [search, setSearch] = useState("");
+	const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
 	useEffect(() => {
 		const stored = localStorage.getItem("entries");
@@ -69,6 +72,24 @@ export default function Home() {
 	  );
 	};
 
+	const visibleEntries = entries
+	  .filter(entry =>
+		(!activeTag || entry.tags.includes(activeTag)) &&
+		entry.text.toLowerCase().includes(search.toLowerCase())
+	  )
+	  .sort((a, b) => {
+		if (sortOrder === "newest") {
+		  return b.date.localeCompare(a.date);
+		}
+		return a.date.localeCompare(b.date);
+	  });
+
+	const toggleSort = () => {
+	  setSortOrder(prev =>
+		prev === "newest" ? "oldest" : "newest"
+	  );
+	};
+
 	return (
     	<main className="bg-white dark:bg-gray-800 p-6 max-w-3xl mx-auto bg-gray-50 min-h-screen">
 			<h1 className="bg-white dark:bg-gray-800 text-4xl font-extrabold mb-6 text-center text-gray-800 dark:text-white">
@@ -88,10 +109,15 @@ export default function Home() {
 				setActiveTag={setActiveTag}
 			  />
 
+			<SearchBar
+			  search={search}
+			  setSearch={setSearch}
+			  sortOrder={sortOrder}
+			  toggleSort={toggleSort}
+			/>
+
 			<EntryList
-				entries={entries.filter(
-				  entry => !activeTag || entry.tags.includes(activeTag)
-				)}
+  				entries={visibleEntries}
 				onDelete={deleteEntry}
 				onEdit={editEntry}
 			  />
