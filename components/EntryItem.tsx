@@ -26,6 +26,12 @@ export default function EntryItem({ entry, onDelete, onEdit }: Props) {
   {isEditing ? (
     <>
       <textarea
+	  	onKeyDown={(e) => {
+		  if (e.key === "Escape") {
+			setIsEditing(false);
+			setEditText(entry.text);
+		  }
+		}}
         value={editText}
         onChange={e => setEditText(e.target.value)}
         className="w-full border rounded-lg p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-green-400"

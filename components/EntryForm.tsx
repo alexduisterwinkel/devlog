@@ -1,18 +1,29 @@
+import { useRef } from "react";
+
 type Props = {
   onSubmit: (form: FormData) => void;
 };
 
 export default function EntryForm({ onSubmit }: Props) {
-  return (
-    <form
-      onSubmit={e => {
-        e.preventDefault();
-        onSubmit(new FormData(e.currentTarget));
-        e.currentTarget.reset();
-      }}
-      className="bg-white dark:bg-gray-800 mb-6 space-y-3 p-4 bg-white shadow rounded-lg"
-    >
-      <textarea
+	const textRef = useRef<HTMLTextAreaElement>(null);
+
+	return (
+	<form	
+		onSubmit={e => {
+		e.preventDefault();
+		onSubmit(new FormData(e.currentTarget));
+		e.currentTarget.reset();
+	}}
+	className="bg-white dark:bg-gray-800 mb-6 space-y-3 p-4 bg-white shadow rounded-lg"
+	>
+	<textarea
+		onKeyDown={(e) => {
+		  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			e.currentTarget.form?.requestSubmit();
+		  }
+		}}
+		ref={textRef}
         name="text"
         className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 dark:text-white"
 		rows={3}
@@ -30,6 +41,7 @@ export default function EntryForm({ onSubmit }: Props) {
 		className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
 			Add Entry
 	  </button>
+	textRef.current?.focus();
     </form>
   );
 }
