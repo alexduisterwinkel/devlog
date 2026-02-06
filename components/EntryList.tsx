@@ -9,26 +9,33 @@ type Props = {
 };
 
 export default function EntryList({ entries, onDelete, onEdit }: Props) {
-  return (
-    <div className="bg-white dark:bg-gray-800 dark:text-white space-y-4">
-      <AnimatePresence>
-		  {entries.map(entry => (
-			<motion.div
-			  key={entry.id}
-			  initial={{ opacity: 0, y: 10 }}
-			  animate={{ opacity: 1, y: 0 }}
-			  exit={{ opacity: 0, y: -10 }}
-			  layout
-			  transition={{ duration: 0.15 }}
-			>
-			  <EntryItem
-				entry={entry}
-				onDelete={onDelete}
-				onEdit={onEdit}
-			  />
-			</motion.div>
-		  ))}
-		</AnimatePresence>
+	if (entries.length === 0) {
+	return (
+		<div className="text-center py-10 text-gray-500 dark:text-gray-400">
+		  No entries yet. Add your first dev log.
+		</div>
+	  );
+	}
+  	return (
+    	<div className="bg-white dark:bg-gray-800 dark:text-white space-y-4">
+    		<AnimatePresence>
+		  		{entries.map(entry => (
+					<motion.div
+			  			key={entry.id}
+			  			initial={{ opacity: 0, y: 10 }}
+			  			animate={{ opacity: 1, y: 0 }}
+			  			exit={{ opacity: 0, y: -10 }}
+			  			layout
+			  			transition={{ duration: 0.15 }}
+						>
+			  			<EntryItem
+							entry={entry}
+							onDelete={onDelete}
+							onEdit={onEdit}
+			  			/>
+					</motion.div>
+		  		))}
+			</AnimatePresence>
     </div>
   );
 }
