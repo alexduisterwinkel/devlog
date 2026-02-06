@@ -7,6 +7,7 @@ import EntryForm from "../components/EntryForm";
 import EntryList from "../components/EntryList";
 import TagFilter from "../components/TagFilter";
 import SearchBar from "../components/SearchBar";
+import ErrorBoundary from "../components/ErrorBoundary";
 import { useEntries } from "../hooks/useEntries";
 import './globals.css';
 
@@ -55,11 +56,13 @@ export default function Home() {
 				setActiveTag={setActiveTag}
 			  />
 
-			<EntryList
-  				entries={visibleEntries}
-				onDelete={deleteEntry}
-				onEdit={editEntry}
-			  />
+			<ErrorBoundary>
+				<EntryList
+					entries={visibleEntries}
+					onDelete={deleteEntry}
+					onEdit={editEntry}
+				  />
+			</ErrorBoundary>
 		</main>
   );
 }
