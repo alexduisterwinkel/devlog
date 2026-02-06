@@ -3,6 +3,11 @@
 import { useState, useEffect } from 'react';
 import { Entry } from '../types';
 
+import EntryForm from "../components/EntryForm";
+import EntryList from "../components/EntryList";
+import TagFilter from "../components/TagFilter";
+
+
 export default function Home() {
 	const [entries, setEntries] = useState<Entry[]>([]);
 	const [text, setText] = useState('');
@@ -11,6 +16,20 @@ export default function Home() {
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [editText, setEditText] = useState('');
 
+	useEffect(() => {
+	  const stored = localStorage.getItem("entries");
+	  if (stored) {
+		setEntries(JSON.parse(stored));
+	  }
+	}, []);
+
+	useEffect(() => {
+	  localStorage.setItem("entries", JSON.stringify(entries));
+	}, [entries]);
+	
+	const allTags = Array.from(
+	  new Set(entries.flatMap(entry => entry.tags))
+	);
 	
 	const deleteEntry = (id: string) => {
 	  setEntries(prev => prev.filter(e => e.id !== id));
@@ -27,25 +46,16 @@ export default function Home() {
     	};
 
 		console.log(entries);
-		setEntries([newEntry, ...entries]);
+		setEntries(prev => [newEntry, ...entries]);
 		setText('');
 		setTags('');
   	};
-	
-	useEffect(() => {
-	  const stored = localStorage.getItem("entries");
-	  if (stored) {
-		setEntries(JSON.parse(stored));
-	  }
-	}, []);
 
-	useEffect(() => {
-	  localStorage.setItem("entries", JSON.stringify(entries));
-	}, [entries]);
-
-	const allTags = Array.from(
-	  new Set(entries.flatMap(entry => entry.tags))
-	);
+	const editEntry = (id: string, newText: string) => {
+	  setEntries(prev =>
+		prev.map(e => (e.id === id ? { ...e, text: newText } : e))
+	  );
+	};
 
 	return (
     	<main className="p-4">
@@ -81,48 +91,15 @@ export default function Home() {
 			</button>
 		  ))}
 		</div>
-		
-      	<div>
-			{entries
-			  .filter(entry =>
-				!activeTag || entry.tags.includes(activeTag)
-			  )
-			  .map(entry => (
-				<div key={entry.id}>
-				  	{editingId === entry.id ? (
-					  <>
-						<textarea
-						  value={editText}
-						  onChange={e => setEditText(e.target.value)}
-						/>
-						<button onClick={() => {
-						  setEntries(prev =>
-							prev.map(e =>
-							  e.id === entry.id ? { ...e, text: editText } : e
-							)
-						  );
-						  setEditingId(null);
-						}}>
-						  Save
-						</button>
-					  </>
-					) : (
-					  <div>{entry.text}</div>
-					)}
 
-					<button onClick={() => {
-					  setEditingId(entry.id);
-					  setEditText(entry.text);
-					}}>
-					  Edit
-					</button>
-
-			  		<button onClick={() => deleteEntry(entry.id)}>
-				  		Delete
-					</button>
-				</div>
-			  ))}
-		</div>
+		<EntryList
+			entries={entries.filter(
+			  entry => !activeTag || entry.tags.includes(activeTag)
+			)}
+			onDelete={deleteEntry}
+			onEdit={editEntry}
+		  />
+   
     </main>
   );
 }
