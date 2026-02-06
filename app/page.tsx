@@ -7,6 +7,7 @@ export default function Home() {
 	const [entries, setEntries] = useState<Entry[]>([]);
 	const [text, setText] = useState('');
 	const [tags, setTags] = useState('');
+	const [activeTag, setActiveTag] = useState<string | null>(null);
 
 	const handleSubmit = (e: React.FormEvent) => {
     	e.preventDefault();
@@ -35,6 +36,9 @@ export default function Home() {
 	  localStorage.setItem("entries", JSON.stringify(entries));
 	}, [entries]);
 
+	const allTags = Array.from(
+	  new Set(entries.flatMap(entry => entry.tags))
+	);
 
 	return (
     	<main className="p-4">
@@ -59,11 +63,26 @@ export default function Home() {
         	</button>
       	</form>
 
+		<div className="mb-4 space-x-2">
+		  <button onClick={() => setActiveTag(null)}>
+			All
+		  </button>
+
+		  {allTags.map(tag => (
+			<button key={tag} onClick={() => setActiveTag(tag)}>
+			  #{tag}
+			</button>
+		  ))}
+		</div>
 		
       	<div>
-			{entries.map(entry => {
-		  	return <div key={entry.id}>{entry.text}</div>;
-			})}
+			{entries
+			  .filter(entry =>
+				!activeTag || entry.tags.includes(activeTag)
+			  )
+			  .map(entry => (
+				<div key={entry.id}>{entry.text}</div>
+			  ))}
 		</div>
     </main>
   );
