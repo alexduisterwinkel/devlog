@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Entry } from '../types';
 
 export default function Home() {
@@ -23,6 +23,18 @@ export default function Home() {
 		setText('');
 		setTags('');
   	};
+	
+	useEffect(() => {
+	  const stored = localStorage.getItem("entries");
+	  if (stored) {
+		setEntries(JSON.parse(stored));
+	  }
+	}, []);
+
+	useEffect(() => {
+	  localStorage.setItem("entries", JSON.stringify(entries));
+	}, [entries]);
+
 
 	return (
     	<main className="p-4">
